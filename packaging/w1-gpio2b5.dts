@@ -1,0 +1,18 @@
+// 1-Wire (w1-gpio) on GPIO2_B5 = gpiochip2 line 13, the DS18B20 of donoff.
+// The line has an external pull-up (4.7k to 3.3 V). Line numbers: A0-A7 = 0-7, B0-B7 = 8-15, C = 16-23, D = 24-31.
+// Build: dtc -@ -I dts -O dtb -o w1-gpio2b5.dtbo w1-gpio2b5.dts
+// Install: /boot/overlay-user/w1-gpio2b5.dtbo, "user_overlays=w1-gpio2b5" in /boot/armbianEnv.txt, w1_therm in /etc/modules.
+/dts-v1/;
+/plugin/;
+/ {
+  fragment@0 {
+    target-path = "/";
+    __overlay__ {
+      onewire@0 {
+        compatible = "w1-gpio";
+        gpios = <&gpio2 13 6>; /* GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN */
+        status = "okay";
+      };
+    };
+  };
+};
